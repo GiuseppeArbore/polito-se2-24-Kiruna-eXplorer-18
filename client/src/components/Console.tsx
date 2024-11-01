@@ -1,12 +1,16 @@
 import { Card, Title, Text, Grid, Col, DateRangePicker, Metric, Subtitle, Bold, Italic, Select, SelectItem, TabGroup, TabList, Tab, DateRangePickerItem, DateRangePickerValue } from "@tremor/react";
 import { useState, useMemo } from "react";
 import { FormDialog } from "./form/Form";
+import { MultiSelect, MultiSelectItem } from '@tremor/react';
+
 
 export default function Fatturato() {
 
     const today = new Date(Date.now());
     const [groupKey, setGroupKey] = useState("1");
     const [selectedView, setSelectedView] = useState(0);
+    const [selectedDocuments, setselectedDocuments] = useState<string[]>(['doc1']);
+
     return (
         <main>
             <Title>Dashboard</Title>

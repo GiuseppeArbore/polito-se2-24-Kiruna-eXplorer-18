@@ -5,3 +5,11 @@
 body {
     padding: 2%;
 }
+
+.no-click {
+    pointer-events: none;
+ }
+
+.text-sm {
+    font-size: smaller;
+}
