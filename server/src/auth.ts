@@ -91,7 +91,7 @@ export function initAuthRoutes(app: Application) {
 
 export function isLoggedIn(req: Request, res: Response, next: NextFunction): void {
     if (disableAuth) {
-        req.user = { email: "fake@fake.com", role: Stakeholders.URBAN_PLANNER };
+        req.user = { email: "fake@fake.com", role: "Urban Planner" };
         return next();
     }
 
@@ -103,12 +103,12 @@ export function isLoggedIn(req: Request, res: Response, next: NextFunction): voi
 
 export function isUrbanPlanner(req: Request, res: Response, next: NextFunction): void {
     if (disableAuth) {
-        req.user = { email: "fake@fake.com", role: Stakeholders.URBAN_PLANNER };
+        req.user = { email: "fake@fake.com", role: "Urban Planner" };
         return next();
     }
 
     const user = req.user as LightUser;
-    if (req.isAuthenticated() && user.role === Stakeholders.URBAN_PLANNER)
+    if (req.isAuthenticated() && user.role === "Urban Planner")
         return next();
 
     res.status(401).json({ error: "User is not an Urban Planner", status: 401 });

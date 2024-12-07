@@ -140,7 +140,7 @@ export const handleFileUpload = async (req: Request, res: Response, next: NextFu
 
         const uploadResult = await Promise.allSettled(uploadJobs);
         const failed = uploadResult.filter(r => r.status === "rejected");
-        const succeded = uploadResult.filter(r => r.status === "fulfilled").map(r => r.value.fileName);
+        const succeded = uploadResult.filter(r => r.status === "fulfilled").map((r:any) => r.value.fileName);
         toUpload = toUpload.filter(f => !succeded.includes(f));
 
         const dbUpdate = await db.addKxDocumentAttachments(docId, succeded);
