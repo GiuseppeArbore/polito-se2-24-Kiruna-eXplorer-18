@@ -1,7 +1,7 @@
 import { describe, test } from "@jest/globals"
 import request from 'supertest';
-import {app} from "../index";
-import {db} from "../src/db/dao";
+import { app } from "../index";
+import { db } from "../src/db/dao";
 import { mongoose } from "@typegoose/typegoose";
 import testUsers from "../test_users/db_export.kiruna-ex.users.json";
 import testLogins from "../test_users/user_login.json";
@@ -45,7 +45,7 @@ describe("Integration Tests for Auth API", () => {
     test("Incorrect email", async () => {
         const res = await request(app)
             .post("/api/sessions")
-            .send({...testLogins[0], username: "wrong@mail.com"})
+            .send({ ...testLogins[0], username: "wrong@mail.com" })
 
         expect(res.status).toBe(401);
         expect(res.body).toMatchObject({ message: "Incorrect email and/or password" });
@@ -53,7 +53,7 @@ describe("Integration Tests for Auth API", () => {
     test("Incorrect password", async () => {
         const res = await request(app)
             .post("/api/sessions")
-            .send({...testLogins[0], password: "wrong pass"})
+            .send({ ...testLogins[0], password: "wrong pass" })
 
         expect(res.status).toBe(401);
         expect(res.body).toMatchObject({ message: "Incorrect email and/or password" });
@@ -65,7 +65,7 @@ describe("Integration Tests for Auth API", () => {
             .send()
 
         expect(res.status).toBe(200);
-        expect(res.body).toMatchObject({email: testUsers[0].email, role: testUsers[0].role})
+        expect(res.body).toMatchObject({ email: testUsers[0].email, role: testUsers[0].role })
     });
     test("Get current session withou being logged in", async () => {
         const res = await request(app)

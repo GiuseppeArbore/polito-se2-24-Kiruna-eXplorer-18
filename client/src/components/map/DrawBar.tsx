@@ -8,39 +8,39 @@ import customDrawStyles from './drawStyles';
 
 
 var PreviewMapDraw = new MapboxDraw({
-  modes: {
-    ...CutPolygonMode(MapboxDraw.modes, passing_draw_polygon),
-    draw_polygon: FreehandMode,
-  },
-  displayControlsDefault: false,
-  controls: {
-    polygon: false,
-    trash: false,
-    line_string: false,
-    point: false,
-    combine_features: false,
-    uncombine_features: false,
-},
+    modes: {
+        ...CutPolygonMode(MapboxDraw.modes, passing_draw_polygon),
+        draw_polygon: FreehandMode,
+    },
+    displayControlsDefault: false,
+    controls: {
+        polygon: false,
+        trash: false,
+        line_string: false,
+        point: false,
+        combine_features: false,
+        uncombine_features: false,
+    },
 });
 
 
 var DocumentMapDraw = new MapboxDraw({
-  modes: {
-    ...CutPolygonMode(MapboxDraw.modes, passing_draw_polygon),
-    draw_polygon: FreehandMode,
-    static: StaticMode
-  },
-  displayControlsDefault: false,
-  controls: {
-    polygon: false,
-    trash: false,
-    line_string: false,
-    point: false,
-    combine_features: false,
-    uncombine_features: false,
-  },
-  userProperties: true,
-  styles: customDrawStyles
+    modes: {
+        ...CutPolygonMode(MapboxDraw.modes, passing_draw_polygon),
+        draw_polygon: FreehandMode,
+        static: StaticMode
+    },
+    displayControlsDefault: false,
+    controls: {
+        polygon: false,
+        trash: false,
+        line_string: false,
+        point: false,
+        combine_features: false,
+        uncombine_features: false,
+    },
+    userProperties: true,
+    styles: customDrawStyles
 });
 
-export { PreviewMapDraw,DocumentMapDraw }; 
+export { PreviewMapDraw, DocumentMapDraw }; 

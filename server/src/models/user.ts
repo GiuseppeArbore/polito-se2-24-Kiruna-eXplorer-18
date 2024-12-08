@@ -14,16 +14,16 @@ export interface LightUser {
 export class User {
     _id?: mongoose.Types.ObjectId;
 
-    @prop({required: true, type: String})
+    @prop({ required: true, type: String })
     email!: string;
 
-    @prop({required: true, type: Buffer})
+    @prop({ required: true, type: Buffer })
     password!: Buffer;
 
-    @prop({required: true, type: Buffer})
+    @prop({ required: true, type: Buffer })
     salt!: Buffer;
 
-    @prop({required: true, type: String, enum: Stakeholders})
+    @prop({ required: true, type: String, enum: Stakeholders })
     role!: Stakeholders;
 }
 

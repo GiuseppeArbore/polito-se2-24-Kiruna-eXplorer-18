@@ -1,29 +1,29 @@
 import { DocInfo, KxDocument, KxDocumentAggregateData } from "../models/model";
 import { KxDocumentModel } from "../models/model";
 import { mongoose } from "@typegoose/typegoose";
-import dotenv from 'dotenv'; 
+import dotenv from 'dotenv';
 import { User, UserModel } from "../models/user";
 
 
 class DAO {
     private static instance: DAO;
     private constructor() {
-        const str = process.env.MONGO_CONN_STR; 
-        console.log('conn_string', str); 
+        const str = process.env.MONGO_CONN_STR;
+        console.log('conn_string', str);
         this.connectToDB(str);
     }
 
     static getInstance(): DAO {
         if (!DAO.instance) {
-            
+
             DAO.instance = new DAO();
         }
         return DAO.instance;
     }
 
-    private async connectToDB(conn_string: string | undefined ) {
-        let conn :string = "mongodb://localhost:27017/kiruna-ex";
-        if(conn_string) {
+    private async connectToDB(conn_string: string | undefined) {
+        let conn: string = "mongodb://localhost:27017/kiruna-ex";
+        if (conn_string) {
             conn = conn_string;
         }
         try {
@@ -46,7 +46,7 @@ class DAO {
         return this.fromResultToUser(res);
     }
     async deleteUser(id: mongoose.Types.ObjectId): Promise<boolean> {
-        const result = await UserModel.deleteOne({_id: id}).exec();
+        const result = await UserModel.deleteOne({ _id: id }).exec();
         if (result.deletedCount === 1) {
             return true;
         }
@@ -136,7 +136,7 @@ class DAO {
     }
     async addKxDocumentAttachments(id: mongoose.Types.ObjectId, fileNames: string[]): Promise<boolean> {
         const result = await KxDocumentModel.updateOne(
-            {_id: id._id},
+            { _id: id._id },
             {
                 $push: {
                     attachments: {
@@ -152,7 +152,7 @@ class DAO {
     }
     async removeKxDocumentAttachments(id: mongoose.Types.ObjectId, fileNames: string[]): Promise<boolean> {
         const result = await KxDocumentModel.updateOne(
-            {_id: id._id},
+            { _id: id._id },
             {
                 $pull: {
                     attachments: {
@@ -168,7 +168,7 @@ class DAO {
     }
     async updateKxDocumentDescription(id: mongoose.Types.ObjectId, description: string): Promise<KxDocument | null> {
         const result = await KxDocumentModel.updateOne(
-            {_id: id._id},
+            { _id: id._id },
             {
                 $set: {
                     description: description
@@ -183,7 +183,7 @@ class DAO {
     }
     async updateKxDocumentInfo(id: mongoose.Types.ObjectId, info: DocInfo): Promise<KxDocument | null> {
         const result = await KxDocumentModel.updateOne(
-            {_id: id._id},
+            { _id: id._id },
             {
                 $set: info
             }

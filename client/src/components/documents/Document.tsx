@@ -46,7 +46,7 @@ interface FormDialogProps {
 export default function Document({ user }: DocumentProps) {
     const formatLocalDate = (date: Date) => {
         return date.toLocaleDateString('sv-SE'); // 'sv-SE' è un formato ISO-like
-      };
+    };
 
     const canEdit = user && user.role === Stakeholders.URBAN_PLANNER;
 

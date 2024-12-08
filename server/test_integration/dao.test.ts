@@ -51,7 +51,7 @@ describe("Test DAO", () => {
             },
             type: KxDocumentType.INFORMATIVE,
             language: "Swedish",
-            doc_coordinates: {type: AreaType.ENTIRE_MUNICIPALITY},
+            doc_coordinates: { type: AreaType.ENTIRE_MUNICIPALITY },
             description: "Test",
             connections: {
                 direct: [], collateral: [], projection: [], update: []
@@ -76,7 +76,7 @@ describe("Test DAO", () => {
             },
             type: KxDocumentType.INFORMATIVE,
             language: "Swedish",
-            doc_coordinates: {type: AreaType.ENTIRE_MUNICIPALITY},
+            doc_coordinates: { type: AreaType.ENTIRE_MUNICIPALITY },
             description: "Test",
             connections: {
                 direct: [], collateral: [], projection: [], update: []
@@ -101,7 +101,7 @@ describe("Test DAO", () => {
             },
             type: KxDocumentType.INFORMATIVE,
             language: "Swedish",
-            doc_coordinates: {type: AreaType.ENTIRE_MUNICIPALITY},
+            doc_coordinates: { type: AreaType.ENTIRE_MUNICIPALITY },
             description: "Test"
         })
     });
@@ -121,7 +121,7 @@ describe("Test DAO", () => {
             },
             type: KxDocumentType.INFORMATIVE,
             language: "Italian",
-            doc_coordinates: {type: AreaType.ENTIRE_MUNICIPALITY},
+            doc_coordinates: { type: AreaType.ENTIRE_MUNICIPALITY },
             description: "Test",
             pages: [2, [4, 8]],
             connections: {
@@ -158,7 +158,7 @@ describe("Test DAO", () => {
         if (res && res._id) {
             expect(res).toHaveProperty("_id");
             const get = await db.getKxDocumentById(res._id);
-            expect(get?.doc_coordinates).toMatchObject({type: AreaType.ENTIRE_MUNICIPALITY});
+            expect(get?.doc_coordinates).toMatchObject({ type: AreaType.ENTIRE_MUNICIPALITY });
             const res2 = await db.deleteKxDocument(res._id);
             expect(res2).toBeTruthy();
         }
@@ -186,7 +186,7 @@ describe("Test DAO", () => {
         if (res && res._id) {
             expect(res).toHaveProperty("_id");
             const get = await db.getKxDocumentById(res._id);
-            expect(get?.doc_coordinates).toMatchObject({type: AreaType.POINT, coordinates: [20.26, 67.845]});
+            expect(get?.doc_coordinates).toMatchObject({ type: AreaType.POINT, coordinates: [20.26, 67.845] });
             const res2 = await db.deleteKxDocument(res._id);
             expect(res2).toBeTruthy();
         }

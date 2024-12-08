@@ -20,10 +20,10 @@ export interface DocInfo {
     },
 })
 export class DateRange {
-    @prop({required: true, type: Date})
+    @prop({ required: true, type: Date })
     from!: Date;
 
-    @prop({required: false, type: Date})
+    @prop({ required: false, type: Date })
     to?: Date;
 }
 
@@ -34,16 +34,16 @@ export class DateRange {
 })
 class Connections {
 
-    @prop({required: true, ref: () => KxDocument})
+    @prop({ required: true, ref: () => KxDocument })
     direct!: Ref<KxDocument>[];
 
-    @prop({required: true, ref: () => KxDocument})
+    @prop({ required: true, ref: () => KxDocument })
     collateral!: Ref<KxDocument>[];
 
-    @prop({required: true, ref: () => KxDocument})
+    @prop({ required: true, ref: () => KxDocument })
     projection!: Ref<KxDocument>[];
 
-    @prop({required: true, ref: () => KxDocument})
+    @prop({ required: true, ref: () => KxDocument })
     update!: Ref<KxDocument>[];
 }
 
@@ -54,21 +54,21 @@ class Connections {
     },
 })
 class DocCoordsBase {
-    @prop({required: true, type: String, enum: AreaType})
+    @prop({ required: true, type: String, enum: AreaType })
     type!: AreaType
 }
 
 export class Point extends DocCoordsBase {
     declare type: AreaType.POINT
 
-    @prop({required: true, type: [Number]})
+    @prop({ required: true, type: [Number] })
     coordinates!: number[]
 }
 
 export class Area extends DocCoordsBase {
     declare type: AreaType.AREA
 
-    @prop({required: true, type: [[[Number]]]})
+    @prop({ required: true, type: [[[Number]]] })
     coordinates!: number[][][]
 }
 
@@ -86,49 +86,49 @@ export type DocCoords = Point | Area | WholeMunicipality;
 export class KxDocument {
     _id?: mongoose.Types.ObjectId;
 
-    @prop({required: true, type: String})
+    @prop({ required: true, type: String })
     title!: string;
 
-    @prop({required: true, type: String})
+    @prop({ required: true, type: String })
     stakeholders!: string[];
 
     //@prop({required: true, type: Scale})
     //scale_info!: Scale;
 
-    @prop({required: true, type: Number})
+    @prop({ required: true, type: Number })
     scale!: number;
 
-    @prop({required: true, type: DateRange})
+    @prop({ required: true, type: DateRange })
     issuance_date!: DateRange;
 
-    @prop({required: true, type: String})
+    @prop({ required: true, type: String })
     type!: string;
 
-    @prop({type: String})
+    @prop({ type: String })
     language?: string;
 
     @prop({
         required: true,
         type: DocCoordsBase,
         discriminators: () => [
-            {type: Point, value: AreaType.POINT},
-            {type: Area, value: AreaType.AREA},
-            {type: WholeMunicipality, value: AreaType.ENTIRE_MUNICIPALITY},
+            { type: Point, value: AreaType.POINT },
+            { type: Area, value: AreaType.AREA },
+            { type: WholeMunicipality, value: AreaType.ENTIRE_MUNICIPALITY },
         ]
     })
     doc_coordinates!: DocCoordsBase;
 
-    @prop({required: true, type: String})
+    @prop({ required: true, type: String })
     description!: string;
 
     // TODO: use proper schema and validate
-    @prop({allowMixed: Severity.ALLOW, type: [mongoose.Schema.Types.Mixed], validate: () => {}})
+    @prop({ allowMixed: Severity.ALLOW, type: [mongoose.Schema.Types.Mixed], validate: () => { } })
     pages?: PageRange[];
 
-    @prop({required: true, type: Connections})
+    @prop({ required: true, type: Connections })
     connections!: Connections;
 
-    @prop({type: String})
+    @prop({ type: String })
     attachments?: string[];
 }
 

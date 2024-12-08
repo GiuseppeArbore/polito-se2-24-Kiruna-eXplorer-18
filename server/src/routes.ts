@@ -1,5 +1,5 @@
 
-import { createKxDocument, getAllKxDocuments, getKxDocumentById, deleteKxDocument, getPresignedUrlForAttachment, updateKxDocumentInfo, updateKxDocumentDescription, handleFileUpload, removeAttachmentFromDocument, getKxDocumentAggregateData} from './controller';
+import { createKxDocument, getAllKxDocuments, getKxDocumentById, deleteKxDocument, getPresignedUrlForAttachment, updateKxDocumentInfo, updateKxDocumentDescription, handleFileUpload, removeAttachmentFromDocument, getKxDocumentAggregateData } from './controller';
 import { validateRequest } from './errorHandlers';
 import e, { Application, NextFunction, Request, Response } from 'express';
 import { body, param } from 'express-validator';
@@ -12,7 +12,7 @@ import { mkdir } from 'fs/promises';
 import { isUrbanPlanner } from './auth';
 import kirunaPolygon from './KirunaMunicipality.json';
 import { booleanPointInPolygon } from '@turf/boolean-point-in-polygon';
-import { Feature, Polygon, MultiPolygon} from "geojson";
+import { Feature, Polygon, MultiPolygon } from "geojson";
 
 export function initRoutes(app: Application) {
 
@@ -34,12 +34,12 @@ export function initRoutes(app: Application) {
         body('doc_coordinates').notEmpty().withMessage('Document coordinates are required').isObject()
             .custom((v) => {
                 const poly = kirunaPolygon.features[0] as Feature<Polygon | MultiPolygon>;
-                return isDocCoords(v) &&  
-                (
-                    (v.type === AreaType.ENTIRE_MUNICIPALITY) ||
-                    (v.type === AreaType.POINT && booleanPointInPolygon([v.coordinates[0], v.coordinates[1]], poly)) ||
-                    (v.type === AreaType.AREA && v.coordinates.every(c => c.every(c => booleanPointInPolygon([c[0], c[1]], poly))))
-                )
+                return isDocCoords(v) &&
+                    (
+                        (v.type === AreaType.ENTIRE_MUNICIPALITY) ||
+                        (v.type === AreaType.POINT && booleanPointInPolygon([v.coordinates[0], v.coordinates[1]], poly)) ||
+                        (v.type === AreaType.AREA && v.coordinates.every(c => c.every(c => booleanPointInPolygon([c[0], c[1]], poly))))
+                    )
             }).withMessage('Invalid document coordinates'),
         body('description').notEmpty().withMessage('Description is required'),
         body('pages').optional().isArray().custom((v) => {

@@ -1,5 +1,5 @@
 import * as Bucket from "../src/object_storage/bucket"
-import {app} from "../index";
+import { app } from "../index";
 import request from 'supertest';
 import { db } from '../src/db/dao'
 import { mongoose } from "@typegoose/typegoose";
@@ -30,7 +30,7 @@ describe("Bucket routes", () => {
             .send();
 
         expect(response.status).toBe(201);
-        expect(response.body).toMatchObject({presignedUrl: `test_url_${TEST_ID}_${TEST_FILENAME}`});
+        expect(response.body).toMatchObject({ presignedUrl: `test_url_${TEST_ID}_${TEST_FILENAME}` });
         expect(Bucket.getPresignedUrl).toHaveBeenCalledTimes(1);
     });
 

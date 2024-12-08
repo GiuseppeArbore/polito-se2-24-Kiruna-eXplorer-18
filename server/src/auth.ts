@@ -40,7 +40,7 @@ passport.deserializeUser(async (user: LightUser, cb) => {
     try {
         const fullUser = await db.getUserByEmail(user.email);
         if (!fullUser) return cb(null, false);
-        cb(null, {email: fullUser.email, role: fullUser.role} as LightUser);
+        cb(null, { email: fullUser.email, role: fullUser.role } as LightUser);
     } catch (e) {
         return cb(e);
     }
@@ -85,8 +85,8 @@ export function initAuthRoutes(app: Application) {
     app.delete("/api/sessions/current",
         isLoggedIn,
         (req, res, _) => {
-        req.logout(() => res.end());
-    });
+            req.logout(() => res.end());
+        });
 }
 
 export function isLoggedIn(req: Request, res: Response, next: NextFunction): void {

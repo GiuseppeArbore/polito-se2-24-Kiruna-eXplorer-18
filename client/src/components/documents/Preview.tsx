@@ -50,13 +50,13 @@ export default function PreviewDoc(open: boolean, setOpen: (bool: boolean) => vo
                         <img src={fileUrl} alt="Document Preview" className="max-w-full max-h-full" />
                     </div>
                 ) : title && mime.getType(title)?.split("/")[1] === "pdf" ?
-                 <div className="flex justify-center items-center mx-3" style={{ height: '70vh' }}>
-                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-                        {fileUrl && <Viewer fileUrl={fileUrl} viewMode={ViewMode.SinglePage} />}
-                    </Worker>
-                </div> : <div className="flex justify-center items-center">
-                    <p>Preview not available</p>
-                </div>}
+                    <div className="flex justify-center items-center mx-3" style={{ height: '70vh' }}>
+                        <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+                            {fileUrl && <Viewer fileUrl={fileUrl} viewMode={ViewMode.SinglePage} />}
+                        </Worker>
+                    </div> : <div className="flex justify-center items-center">
+                        <p>Preview not available</p>
+                    </div>}
 
 
             </DialogPanel>

@@ -1,4 +1,4 @@
-import {app} from "../index";
+import { app } from "../index";
 import request from 'supertest';
 import { db } from '../src/db/dao'
 import passport from "passport";
@@ -18,7 +18,7 @@ describe("Auth routes", () => {
 
         const res = await request(app)
             .post("/api/sessions")
-            .send({...testLogins[0], username: "wrongmail.com"});
+            .send({ ...testLogins[0], username: "wrongmail.com" });
 
         expect(res.status).toBe(400);
         expect(res.body.errors).toBeDefined();
@@ -30,7 +30,7 @@ describe("Auth routes", () => {
 
         const res = await request(app)
             .post("/api/sessions")
-            .send({password: testLogins[0].password});
+            .send({ password: testLogins[0].password });
 
         expect(res.status).toBe(400);
         expect(res.body.errors).toBeDefined();
@@ -42,7 +42,7 @@ describe("Auth routes", () => {
 
         const res = await request(app)
             .post("/api/sessions")
-            .send({username: testLogins[0].username});
+            .send({ username: testLogins[0].username });
 
         expect(res.status).toBe(400);
         expect(res.body.errors).toBeDefined();

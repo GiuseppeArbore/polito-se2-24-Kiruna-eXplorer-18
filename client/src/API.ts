@@ -4,7 +4,7 @@ import { KxDocument, PageRange } from './model';
 const API_URL = 'http://localhost:3001/api';
 
 
- const createKxDocument = async (document: KxDocument): Promise<KxDocument | null> => {
+const createKxDocument = async (document: KxDocument): Promise<KxDocument | null> => {
     try {
         const response = await fetch(API_URL + "/documents", {
             method: 'POST',
@@ -14,11 +14,11 @@ const API_URL = 'http://localhost:3001/api';
             credentials: 'include',
             body: JSON.stringify(document),
         });
-    
+
         if (!response.ok) {
             throw new Error(`Error status: ${response.status}`);
         }
-    
+
         const data: KxDocument = await response.json();
         return data;
     } catch (error) {
@@ -108,7 +108,7 @@ const updateKxDocumentDescription = async (documentId: string, description: stri
             },
             credentials: 'include',
             body: JSON.stringify({ description }),
-                  });
+        });
 
         if (!response.ok) {
             throw new Error(`Error status: ${response.status}`);
@@ -124,7 +124,7 @@ const updateKxDocumentDescription = async (documentId: string, description: stri
         }
     }
 };
-const getKxFileByID = async (id: mongoose.Types.ObjectId, fileName:string): Promise<{presignedUrl: string}> => {
+const getKxFileByID = async (id: mongoose.Types.ObjectId, fileName: string): Promise<{ presignedUrl: string }> => {
     try {
         const response = await fetch(API_URL + `/documents/${id}/presignedUrl/${fileName}`, {
             method: 'GET',
@@ -134,7 +134,7 @@ const getKxFileByID = async (id: mongoose.Types.ObjectId, fileName:string): Prom
         if (!response.ok) {
             throw new Error(`Error status: ${response.status}`);
         }
-        const data: {presignedUrl: string} = await response.json();
+        const data: { presignedUrl: string } = await response.json();
         return data;
     } catch (error) {
         if (error instanceof Error) {
@@ -197,7 +197,7 @@ const addAttachmentToDocument = async (id: mongoose.Types.ObjectId, files: File[
             body: formData,
             credentials: 'include'
         });
-        
+
         if (!response.ok) {
             throw new Error(`Error status: ${response.status}`);
         }
@@ -238,47 +238,47 @@ interface Credentials {
 
 const login = async (credentials: Credentials) => {
     const response = await fetch(API_URL + '/sessions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(credentials),
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(credentials),
     });
     if (response.ok) {
-      const user = await response.json();
-      return user;
+        const user = await response.json();
+        return user;
     } else {
-      const errDetails = await response.json();
-      throw errDetails;
+        const errDetails = await response.json();
+        throw errDetails;
     }
-  };
-  
-  const getUserInfo = async () => {
+};
+
+const getUserInfo = async () => {
     const response = await fetch(API_URL + '/sessions/current', {
-      method: 'GET',
-      credentials: 'include'
+        method: 'GET',
+        credentials: 'include'
     });
     if (!response.ok) {
-      const errMessage = await response.json();
-      throw errMessage;
+        const errMessage = await response.json();
+        throw errMessage;
     } else {
-      return response.json();
+        return response.json();
     }
-  };
-  
-  const logout = async () => {
+};
+
+const logout = async () => {
     const response = await fetch(API_URL + '/sessions/current', {
-      method: 'DELETE',
-      credentials: 'include'
+        method: 'DELETE',
+        credentials: 'include'
     });
     if (!response.ok) {
-      const errMessage = await response.json();
-      throw errMessage;
+        const errMessage = await response.json();
+        throw errMessage;
     } else {
-      return null;
+        return null;
     }
-  };
+};
 
 const API = { createKxDocument, getAllKxDocuments, getKxDocumentById, deleteKxDocument, updateKxDocumentDescription, updateKxDocumentInformation, getKxFileByID, addAttachmentToDocument, deleteAttachmentFromDocument, login, getUserInfo, logout };
 export default API;

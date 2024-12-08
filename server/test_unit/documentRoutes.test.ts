@@ -2,7 +2,7 @@ import request from 'supertest';
 import { NextFunction, Request, Response } from 'express';
 import { createKxDocument } from '../src/controller';
 import * as cnt from "../src/controller";
-import {app} from "../index";
+import { app } from "../index";
 import { db } from '../src/db/dao'
 import { AreaType, KxDocumentType, Scale, Stakeholders } from '../src/models/enum';
 import { KIRUNA_COORDS } from '../src/utils';
@@ -198,7 +198,8 @@ describe('Document Routes', () => {
             });
 
         expect(response.status).toBe(400);
-        expect(response.body.errors[0].msg).toBe('Invalid connections');}
+        expect(response.body.errors[0].msg).toBe('Invalid connections');
+    }
     );
 
     test('Test 7 - POST /api/documents/:id/attachments - nominal case', async () => {

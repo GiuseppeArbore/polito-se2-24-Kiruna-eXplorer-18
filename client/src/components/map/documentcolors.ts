@@ -1,6 +1,6 @@
 import { ExpressionSpecification } from 'mapbox-gl';
 
-const documentAreaColorMapping : ExpressionSpecification = [
+const documentAreaColorMapping: ExpressionSpecification = [
     'case',
     ['==', ['get', 'type'], 'Informative Document'], '#abc4ab',
     ['==', ['get', 'type'], 'Prescriptive Document'], '#2b9eb3',
@@ -11,9 +11,9 @@ const documentAreaColorMapping : ExpressionSpecification = [
     ['==', ['get', 'type'], 'Conflict Resolution'], '#474973',
     ['==', ['get', 'type'], 'Consultation'], '#ef8354',
     '#ffcc00' // Default highlight color
-  ];
+];
 
-  const documentBorderColorMapping : ExpressionSpecification = [
+const documentBorderColorMapping: ExpressionSpecification = [
     'case',
     ['==', ['get', 'type'], 'Informative Document'], '#8a9b8a',
     ['==', ['get', 'type'], 'Prescriptive Document'], '#217a8a',
@@ -26,5 +26,5 @@ const documentAreaColorMapping : ExpressionSpecification = [
     '#cc9900' // Default highlight color
 ];
 
-  export {documentAreaColorMapping,documentBorderColorMapping};
+export { documentAreaColorMapping, documentBorderColorMapping };
 

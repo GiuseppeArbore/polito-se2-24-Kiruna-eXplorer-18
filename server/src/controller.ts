@@ -18,7 +18,7 @@ export const createKxDocument = async (req: Request, res: Response, next: NextFu
         }
 
     } catch (error) {
-        next(error); 
+        next(error);
     }
 };
 
@@ -96,8 +96,8 @@ export const getPresignedUrlForAttachment = async (req: Request, res: Response, 
         const fileName = req.params.fileName;
         const url = await getPresignedUrl(id, fileName);
 
-        res.status(201).json({presignedUrl: url});
-        
+        res.status(201).json({ presignedUrl: url });
+
     } catch (error) {
         next(error);
     }
@@ -109,7 +109,7 @@ export const handleFileUpload = async (req: Request, res: Response, next: NextFu
         S3Output: PutObjectCommandOutput
     }
 
-    const docId = new mongoose.Types.ObjectId(req.params.id); 
+    const docId = new mongoose.Types.ObjectId(req.params.id);
     if (!req.files) {
         res.status(409).send();
         return;
