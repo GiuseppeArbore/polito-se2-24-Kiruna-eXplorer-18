@@ -1,8 +1,8 @@
 import { describe, test } from "@jest/globals"
 import request from 'supertest';
 import { app } from "../index";
-import { AreaType, KxDocumentType, Scale, Stakeholders } from "../src/models/enum";
-import { KxDocument } from "../src/models/model";
+import { AreaType, KxDocumentType, ScaleType, Stakeholders } from "../src/models/enum";
+import { KxDocument, ScaleOneToN } from "../src/models/model";
 import { db } from "../src/db/dao";
 import { KIRUNA_COORDS } from "../src/utils";
 import { mongoose } from "@typegoose/typegoose";
@@ -53,8 +53,11 @@ describe("Integration Tests for Document API", () => {
             .send({
                 title: "Integration Test Document",
                 stakeholders: [Stakeholders.RESIDENT, "Custom SH"],
-                scale_info: Scale.TEXT,
-                scale: 10,
+                scale_info: ScaleType.TEXT,
+                scale: {
+                    type: ScaleType.ONE_TO_N,
+                    scale: 10
+                } as ScaleOneToN,
                 issuance_date: {
                     from: date
                 },
@@ -80,7 +83,7 @@ describe("Integration Tests for Document API", () => {
             .set("Cookie", urbanPlannerCookie)
             .send({
                 stakeholders: [Stakeholders.RESIDENT],
-                scale_info: Scale.TEXT,
+                scale_info: ScaleType.TEXT,
                 scale: 10,
                 issuance_date: date,
                 type: KxDocumentType.INFORMATIVE,
@@ -105,8 +108,11 @@ describe("Integration Tests for Document API", () => {
                 _id: documentIds[0],
                 title: "Integration Test Document",
                 stakeholders: [Stakeholders.RESIDENT],
-                scale_info: Scale.TEXT,
-                scale: 10,
+                scale_info: ScaleType.TEXT,
+                scale: {
+                    type: ScaleType.ONE_TO_N,
+                    scale: 10
+                } as ScaleOneToN,
                 issuance_date: {
                     from: date
                 },
@@ -139,8 +145,11 @@ describe("Integration Tests for Document API", () => {
                 _id: documentIds[0],
                 title: "Integration Test Document",
                 stakeholders: [Stakeholders.RESIDENT],
-                scale_info: Scale.TEXT,
-                scale: 10,
+                scale_info: ScaleType.TEXT,
+                scale: {
+                    type: ScaleType.ONE_TO_N,
+                    scale: 10
+                } as ScaleOneToN,
                 issuance_date: {
                     from: date
                 },
@@ -167,7 +176,7 @@ describe("Integration Tests for Document API", () => {
             .post('/api/documents')
             .set("Cookie", urbanPlannerCookie)
             .send({
-                scale_info: Scale.TEXT,
+                scale_info: ScaleType.TEXT,
                 scale: 10,
                 issuance_date: date,
                 type: KxDocumentType.INFORMATIVE,
@@ -191,8 +200,10 @@ describe("Integration Tests for Document API", () => {
             .send({
                 title: "Integration Test Document",
                 stakeholders: [Stakeholders.RESIDENT],
-                scale_info: Scale.TEXT,
-                scale: 10,
+                scale: {
+                    type: ScaleType.ONE_TO_N,
+                    scale: 10
+                } as ScaleOneToN,
                 issuance_date: {
                     from: date
                 },
@@ -213,8 +224,10 @@ describe("Integration Tests for Document API", () => {
             .send({
                 title: "Integration Test Document",
                 stakeholders: [Stakeholders.RESIDENT],
-                scale_info: Scale.TEXT,
-                scale: 10,
+                scale: {
+                    type: ScaleType.ONE_TO_N,
+                    scale: 10
+                } as ScaleOneToN,
                 issuance_date: {
                     from: date
                 },
@@ -235,8 +248,10 @@ describe("Integration Tests for Document API", () => {
             .send({
                 title: "Integration Test Document",
                 stakeholders: [Stakeholders.RESIDENT],
-                scale_info: Scale.TEXT,
-                scale: 10,
+                scale: {
+                    type: ScaleType.ONE_TO_N,
+                    scale: 10
+                } as ScaleOneToN,
                 issuance_date: {
                     from: date,
                 },
@@ -262,8 +277,10 @@ describe("Integration Tests for Document API", () => {
             .send({
                 title: "Document 1",
                 stakeholders: [Stakeholders.RESIDENT],
-                scale_info: Scale.TEXT,
-                scale: 10,
+                scale: {
+                    type: ScaleType.ONE_TO_N,
+                    scale: 10
+                } as ScaleOneToN,
                 issuance_date: {
                     from: date,
                 },
@@ -282,8 +299,11 @@ describe("Integration Tests for Document API", () => {
             .send({
                 title: "Document 2",
                 stakeholders: [Stakeholders.RESIDENT],
-                scale_info: Scale.TEXT,
-                scale: 10,
+                scale_info: ScaleType.TEXT,
+                scale: {
+                    type: ScaleType.ONE_TO_N,
+                    scale: 10
+                } as ScaleOneToN,
                 issuance_date: {
                     from: date
                 },
@@ -317,8 +337,11 @@ describe("Integration Tests for Document API", () => {
             .send({
                 title: "Test Document for Fetch",
                 stakeholders: [Stakeholders.RESIDENT],
-                scale_info: Scale.TEXT,
-                scale: 10,
+                scale_info: ScaleType.TEXT,
+                scale: {
+                    type: ScaleType.ONE_TO_N,
+                    scale: 10
+                } as ScaleOneToN,
                 issuance_date: {
                     from: date,
                 },
@@ -341,7 +364,12 @@ describe("Integration Tests for Document API", () => {
         expect(getResponse.body).toBeDefined();
         expect(getResponse.body.title).toBe("Test Document for Fetch");
         expect(getResponse.body.stakeholders).toEqual([Stakeholders.RESIDENT]);
-        expect(getResponse.body.scale).toBe(10);
+        expect(getResponse.body.scale).toMatchObject(
+            {
+                type: ScaleType.ONE_TO_N,
+                scale: 10
+            } as ScaleOneToN
+        );
         expect(getResponse.body.issuance_date).toMatchObject({ from: date.toISOString() });
         expect(getResponse.body.type).toBe(KxDocumentType.INFORMATIVE);
         expect(getResponse.body.language).toBe("Swedish");
@@ -440,7 +468,10 @@ describe("Integration Tests for Document API", () => {
             .send({
                 title: "new title",
                 stakeholders: ["stake"],
-                scale: 10_000,
+                scale: {
+                    type: ScaleType.ONE_TO_N,
+                    scale: 10_000
+                } as ScaleOneToN,
                 type: "asdf",
                 language: "Italian",
                 pages: [],
@@ -460,7 +491,10 @@ describe("Integration Tests for Document API", () => {
             .send({
                 title: "new title",
                 stakeholders: ["stake"],
-                scale: 10_000,
+                scale: {
+                    type: ScaleType.ONE_TO_N,
+                    scale: 10_000
+                } as ScaleOneToN,
                 type: "asdf",
                 language: "Italian",
                 pages: [],

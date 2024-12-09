@@ -22,8 +22,8 @@ import locales from "./../../locales.json";
 import { PreviewMap, SatMap } from "../map/Map";
 import { FeatureCollection } from "geojson"
 import API from "../../API";
-import { AreaType, KxDocumentType, Scale, Stakeholders } from "../../enum";
-import { DocCoords, KxDocument } from "../../model";
+import { AreaType, KxDocumentType, ScaleType, Stakeholders } from "../../enum";
+import { DocCoords, KxDocument, ScaleOneToN } from "../../model";
 import { mongoose } from "@typegoose/typegoose";
 import {
     RiArrowDownCircleLine,
@@ -147,8 +147,7 @@ export function FormDialog(props: FormDialogProps) {
         const newDocument: KxDocument = {
             title,
             stakeholders,
-            //scale_info: Scale.TEXT,
-            scale,
+            scale: {type: ScaleType.ONE_TO_N, scale: scale} as ScaleOneToN,
             doc_coordinates: draw,
             issuance_date: {
                 from: issuanceDate?.from!,

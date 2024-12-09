@@ -15,13 +15,13 @@ import {
 import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { DocumentPageMap, PreviewMap } from '../map/Map';
-import { KxDocument, DocCoords } from "../../model";
+import { KxDocument, DocCoords, Scale, ScaleOneToN } from "../../model";
 import { mongoose } from '@typegoose/typegoose';
 import "../../css/document.css";
 import PreviewDoc from './Preview';
 import { Toast } from '@radix-ui/react-toast';
 import { Toaster } from '../toast/Toaster';
-import { AreaType, KxDocumentType, Scale, Stakeholders } from "../../enum";
+import { AreaType, KxDocumentType, ScaleType, Stakeholders } from "../../enum";
 import {
     parseLocalizedNumber,
     PageRange,
@@ -59,7 +59,7 @@ export default function Document({ user }: DocumentProps) {
     const [drawings, setDrawings] = useState<any>();
     const [title, setTitle] = useState("");
     const [stakeholders, setStakeholders] = useState<string[]>([]);
-    const [scale, setScale] = useState(10000);
+    const [scale, setScale] = useState<ScaleOneToN>({type: ScaleType.ONE_TO_N, scale: 10000});
     const [issuanceDate, setIssuanceDate] = useState<DateRange | undefined>(undefined);
     const [type, setType] = useState<string | undefined>(undefined);
     const [language, setLanguage] = useState<string | undefined>(undefined);
@@ -123,7 +123,7 @@ export default function Document({ user }: DocumentProps) {
                 setDoc(document);
                 setTitle(document.title);
                 setStakeholders(document.stakeholders);
-                setScale(document.scale);
+                setScale(document.scale as ScaleOneToN);
                 setIssuanceDate({ from: document.issuance_date.from, to: document.issuance_date.to });
                 setType(document.type);
                 setLanguage(document.language || undefined);
@@ -272,7 +272,7 @@ export default function Document({ user }: DocumentProps) {
 
                         <div className="flex items-center justify-between mb-2 space-x-2">
                             <i className="text-sm font-light text-tremor-content-strong dark:text-dark-tremor-content-strong">Scale:</i>
-                            <i className='text-md font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong'>1: {scale}</i>
+                            <i className='text-md font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong'>1: {scale.scale}</i>
                         </div>
 
                         <div className="flex items-center justify-between mb-2 space-x-2">
@@ -312,8 +312,8 @@ export default function Document({ user }: DocumentProps) {
                             setIssuanceDate={setIssuanceDate}
                             type={type}
                             setType={setType}
-                            scale={scale}
-                            setScale={setScale}
+                            scale={scale.scale}
+                            setScale={(n) => setScale({type: ScaleType.ONE_TO_N, scale: n} as ScaleOneToN)}
                             language={language}
                             setLanguage={setLanguage}
                             pages={pages}
@@ -763,7 +763,7 @@ export function FormInfoDialog({
         e.preventDefault();
         setTitle(document.title);
         setStakeholders(document.stakeholders);
-        setScale(document.scale);
+        setScale((document.scale as ScaleOneToN).scale);
         setType(document.type);
         setLanguage(document.language || undefined);
         setPages(document.pages || undefined);

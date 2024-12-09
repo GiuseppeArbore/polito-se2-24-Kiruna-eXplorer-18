@@ -4,7 +4,7 @@ import { validateRequest } from './errorHandlers';
 import e, { Application, NextFunction, Request, Response } from 'express';
 import { body, param } from 'express-validator';
 import { AreaType, KxDocumentType, Stakeholders } from './models/enum';
-import { coordDistance, isDocCoords, KIRUNA_COORDS } from './utils';
+import { coordDistance, isDocCoords, isScale, KIRUNA_COORDS } from './utils';
 import multer from 'multer';
 import * as mime from 'mime-types';
 import { randomBytes } from 'crypto';
@@ -22,7 +22,9 @@ export function initRoutes(app: Application) {
             .isArray().withMessage('Stakeholders must be an array'),
         body('stakeholders.*').isString().withMessage('Stakeholders must be an array of strings'),
         body('scale').notEmpty().withMessage('Scale is required')
-            .isNumeric().withMessage('Scale must be a number'),
+            .isObject().custom((v) => {
+                return isScale(v);
+            }).withMessage('Invalid scale'),
         body('issuance_date').notEmpty().withMessage('Issuance date is required')
             .isObject().withMessage("Issuance date not valid"),
         body('issuance_date.from').notEmpty().isISO8601().toDate().withMessage('Issuance date must be a valid date'),

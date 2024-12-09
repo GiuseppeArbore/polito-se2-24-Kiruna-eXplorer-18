@@ -1,8 +1,6 @@
 
-import { AreaType, KxDocumentType, Scale, Stakeholders } from "./enum";
-import { mongoose, getModelForClass, Ref } from "@typegoose/typegoose";
-const prop = (..._: any) => (_: any, _a: string) => { };
-const modelOptions = (..._: any) => (_: any) => { };
+import { AreaType, ScaleType } from "./enum";
+import { mongoose, prop, modelOptions, Ref, Severity } from "@typegoose/typegoose";
 
 export type PageRange = [number, number] | number;
 
@@ -45,29 +43,49 @@ class Connections {
         _id: false,
     },
 })
+class ScaleBase {
+    @prop({ required: true, type: String, enum: ScaleType })
+    type!: ScaleType
+}
+export class ScaleText extends ScaleBase {
+    declare type: ScaleType.TEXT
+}
+export class ScaleBlueprintEffects extends ScaleBase {
+    declare type: ScaleType.BLUEPRINT_EFFECTS
+}
+export class ScaleOneToN extends ScaleBase {
+    declare type: ScaleType.ONE_TO_N
+
+    @prop({ required: true, type: Number, validate: (v: any) => Number.isInteger(v) })
+    scale!: number
+}
+export type Scale = ScaleText | ScaleBlueprintEffects | ScaleOneToN;
+
+@modelOptions({
+    schemaOptions: {
+        discriminatorKey: "type",
+        _id: false,
+    },
+})
 class DocCoordsBase {
     @prop({ required: true, type: String, enum: AreaType })
     type!: AreaType
 }
-
 export class Point extends DocCoordsBase {
     declare type: AreaType.POINT
 
     @prop({ required: true, type: [Number] })
     coordinates!: number[]
 }
-
 export class Area extends DocCoordsBase {
     declare type: AreaType.AREA
 
     @prop({ required: true, type: [[[Number]]] })
     coordinates!: number[][][]
 }
-
 export class WholeMunicipality extends DocCoordsBase {
     declare type: AreaType.ENTIRE_MUNICIPALITY
 }
-
 export type DocCoords = Point | Area | WholeMunicipality;
 
 @modelOptions({
@@ -84,12 +102,18 @@ export class KxDocument {
     @prop({ required: true, type: String })
     stakeholders!: string[];
 
-    @prop({ required: true, type: Number })
-    scale!: number;
-
+    @prop({
+        required: true,
+        type: ScaleBase,
+        discriminators: () => [
+            { type: ScaleText, value: ScaleType.TEXT },
+            { type: ScaleBlueprintEffects, value: ScaleType.BLUEPRINT_EFFECTS },
+            { type: ScaleOneToN, value: ScaleType.ONE_TO_N },
+        ]
+    })
+    scale!: ScaleBase;
 
     @prop({ required: true, type: DateRange })
-
     issuance_date!: DateRange;
 
     @prop({ required: true, type: String })
@@ -113,7 +137,7 @@ export class KxDocument {
     description!: string;
 
     // TODO: use proper schema and validate
-    @prop({ type: [mongoose.Schema.Types.Mixed], validate: () => { } })
+    @prop({ allowMixed: Severity.ALLOW, type: [mongoose.Schema.Types.Mixed], validate: () => { } })
     pages?: PageRange[];
 
     @prop({ required: true, type: Connections })

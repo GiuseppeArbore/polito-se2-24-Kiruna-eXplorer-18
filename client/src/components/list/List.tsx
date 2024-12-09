@@ -4,7 +4,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { KxDocument } from "../../model";
+import { KxDocument, Scale } from "../../model";
 import { Badge, Button, Flex, Card, Text } from "@tremor/react";
 import { useNavigate } from "react-router-dom";
 import { RiDeleteBinLine, RiInfoI } from "@remixicon/react";
@@ -12,7 +12,7 @@ import { toast } from "../../utils/toaster";
 import locales from "../../locales.json";
 import API from "../../API";
 import DeleteDialog from "./DeleteDialog";
-import { Stakeholders } from "../../enum";
+import { ScaleType, Stakeholders } from "../../enum";
 import { prop } from "@typegoose/typegoose";
 import { on } from "events";
 
@@ -94,10 +94,15 @@ function List(props: ListProps) {
             field: "scale",
             enableRowGroup: true,
             filter: true,
-            valueFormatter: (params: { value: string | number }) => {
-                return params.value !== undefined
-                    ? "1:" + params.value.toLocaleString()
-                    : "";
+            valueFormatter: (params: { value: Scale }) => {
+                const s = params.value;
+                switch(s.type) {
+                    case ScaleType.ONE_TO_N: {
+                        return `1:${s.scale}`
+                    }
+                    default:
+                        return s.type
+                }
             },
             hide: true,
         },

@@ -11,6 +11,7 @@ import { KxDocumentType, Stakeholders } from './models/enum';
 export const createKxDocument = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
         const document = await KxDocumentModel.create(req.body);
+        //const document = req.body as KxDocument;
         const createdDocument = await db.createKxDocument(document);
 
         if (createdDocument) {

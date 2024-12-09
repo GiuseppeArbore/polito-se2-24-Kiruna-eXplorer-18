@@ -5,10 +5,10 @@ export enum Stakeholders {
     VISITOR = "Visitor"
 }
 
-export enum Scale {
+export enum ScaleType {
     TEXT = "Text",
-    LARGE_ARCHITECTURAL = "Large Architectural Scale",
-    SMALL_ARCHITECTURAL = "Small Architectural Scale"
+    BLUEPRINT_EFFECTS = "Blueprint/Effects",
+    ONE_TO_N = "1:N"
 }
 
 export enum KxDocumentType {

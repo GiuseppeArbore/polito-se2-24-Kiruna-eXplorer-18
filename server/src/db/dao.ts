@@ -91,7 +91,7 @@ class DAO {
                         $addToSet: "$type"
                     },
                     scales: {
-                        $addToSet: "$scale"
+                        $addToSet: "$scale.scale"
                     }
                 }
             },
