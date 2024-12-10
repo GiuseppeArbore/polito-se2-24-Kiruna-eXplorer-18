@@ -15,6 +15,7 @@ import {
     Badge,
     Callout,
     Switch,
+    Icon,
 } from "@tremor/react";
 import { DateRangePicker } from "./DatePicker"
 import { useState, useEffect } from "react";
@@ -31,6 +32,7 @@ import {
     RiLoopLeftLine,
     RiProjector2Line,
     RiInformation2Line,
+    RiStarFill,
 } from "@remixicon/react";
 
 import {
@@ -580,7 +582,7 @@ export function FormDocumentInformation({
                     {locales.map((l) => {
                         return (
                             <SearchSelectItem value={l.code} key={`lang-${l.code}`}>
-                                {l.name}
+                                 {l.name === "English" || l.name === "Swedish" ? <><Icon className="py-0" size="xs" icon={RiStarFill}/><strong>{l.name}</strong></> : l.name}
                             </SearchSelectItem>
                         );
                     })}
