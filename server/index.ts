@@ -9,7 +9,7 @@ const app: express.Application = express();
 const port: number = 3001;
 
 const corsOptions: CorsOptions = {
-    origin: ['http://localhost:1420', 'http://localhost', 'http://localhost:80', "http://localhost:8080"],
+    origin: true,
     credentials: true,
 };
 
