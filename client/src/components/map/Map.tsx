@@ -30,7 +30,8 @@ import {
     RiShapeLine,
     RiArrowDownSLine,
     RiFileLine,
-    RiEditBoxLine
+    RiEditBoxLine,
+    RiSearchLine
 } from "@remixicon/react";
 import { PreviewMapDraw, DocumentMapDraw } from "./DrawBar";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
@@ -61,6 +62,8 @@ export interface SatMapProps {
     className?: string;
     entireMunicipalityDocuments?: KxDocument[];
     user: { email: string, role: Stakeholders } | null;
+    setQuickFilterText?: (text: string) => void;
+
 }
 
 const getPointsAndCentroids = (drawing: FeatureCollection<Geometry, GeoJsonProperties> | undefined, offsetDistance: number): FeatureCollection<Geometry, GeoJsonProperties> => {
@@ -161,6 +164,10 @@ export const DashboardMap: React.FC<SatMapProps & { isVisible: boolean }> = (pro
     const mapContainerRef = useRef<any>(null);
     const mapRef = useRef<mapboxgl.Map | null>(null);
     const [isKirunaVisible, setIsKirunaVisible] = useState(false);
+    const [searchText, setSearchText] = useState('');
+    const filteredDocuments = props.entireMunicipalityDocuments?.filter((doc) =>
+        doc.title.toLowerCase().includes(searchText.toLowerCase())
+    );
 
     const toggleKirunaVisibility = () => {
         if (mapRef.current) {
@@ -169,6 +176,7 @@ export const DashboardMap: React.FC<SatMapProps & { isVisible: boolean }> = (pro
             setIsKirunaVisible(!isKirunaVisible);
         }
     };
+
 
     useEffect(() => {
         if (mapRef.current) return;
@@ -599,6 +607,12 @@ export const DashboardMap: React.FC<SatMapProps & { isVisible: boolean }> = (pro
         map.setZoom(props.zoom || defaultZoom);
     }, [props.zoom]);
 
+    useEffect(() => {
+        if (!props.isVisible) {
+          props.setQuickFilterText?.('');
+        }
+      }, [props.isVisible]);
+
     return (
         <>
             <div
@@ -616,6 +630,19 @@ export const DashboardMap: React.FC<SatMapProps & { isVisible: boolean }> = (pro
             <Button className="Kiruna-area-button" style={{ display: props.isVisible ? "flex" : "none" }} onClick={toggleKirunaVisibility}>
                 {isKirunaVisible ? 'Hide Kiruna Area' : 'Show Kiruna Area'}
             </Button>
+
+            {props.isVisible && <TextInput
+
+                icon={RiSearchLine}
+                id="quickFilter"
+                placeholder="Search..."
+                className="quickfilter w-full"
+                // value={props.quickFilterText}
+                onValueChange={(e) => {
+                    props.setQuickFilterText?.(e);
+
+                }}
+            ></TextInput>}
 
 
             <DropdownMenu modal={false}>
@@ -640,11 +667,29 @@ export const DashboardMap: React.FC<SatMapProps & { isVisible: boolean }> = (pro
                         </div>
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
+                <DropdownMenuContent >
                     <DropdownMenuLabel>Documents</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                        {props.entireMunicipalityDocuments?.map((doc, index) => (
+                    <div style={{ padding: '0.2rem' }}>
+                        <input
+                            type="text"
+                            placeholder="Search documents..."
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
+                            onKeyDown={(e) => e.stopPropagation()}
+                            style={{
+                                width: '100%',
+                                height: '1.5rem',
+                                padding: '0.5rem',
+                                boxSizing: 'border-box',
+                                borderRadius: '0.5rem',
+                                fontSize: '0.75rem',
+                            }}
+                        />
+                    </div>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuGroup style={{ maxHeight: '15rem', overflowY: 'auto' }}>
+                        {filteredDocuments?.map((doc, index) => (
                             <DropdownMenuItem
                                 key={index}
                                 onClick={() => (window.location.href = `/documents/${doc._id}`)}

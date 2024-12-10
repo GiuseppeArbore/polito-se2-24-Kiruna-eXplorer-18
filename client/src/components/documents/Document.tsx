@@ -250,11 +250,8 @@ export default function Document({ user }: DocumentProps) {
 
     return (
         <div>
-            <div className='flex flex-row mb-2'>
-                <i onClick={() => navigate("/")}><RiHome3Line className="mt-1 text-2xl text-tremor-content-strong dark:text-dark-tremor-content-strong" /></i>
+            <div className='flex flex-row mb-2'style={{marginTop: '0rem'}}>
                 <h1 className="text-2xl font-semibold text-tremor-content-strong dark:text-dark-tremor-content-strong">Document Page</h1>
-
-
             </div>
             <Card>
                 <div className='flex flex-row '>
@@ -632,12 +629,12 @@ export default function Document({ user }: DocumentProps) {
                 {
                     !entireMunicipality ? (
                         <Card
-                            className={`my-4 p-0 overflow-hidden cursor-pointer ${"ring-tremor-ring"}`}
+                            className={`my-4 p-0 mb-0 overflow-hidden cursor-pointer ${"ring-tremor-ring"}`}
                         >
                             <DocumentPageMap
                                 setDrawing={(d) => { setDrawings(d); setSaveDrawing(true) }}
                                 drawing={drawings}
-                                style={{ minHeight: "300px", width: "100%" }}
+                                style={{ minHeight: "300px", width: "100%", height: "80vh" }} 
                                 user={user}
                             />
                         </Card>

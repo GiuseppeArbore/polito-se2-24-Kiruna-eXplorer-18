@@ -31,6 +31,7 @@ import {
     RiLoopLeftLine,
     RiProjector2Line,
     RiInformation2Line,
+    RiAddLine,
 } from "@remixicon/react";
 
 import {
@@ -366,8 +367,10 @@ export function FormDialog(props: FormDialogProps) {
     return (
         <>
             {props.user && props.user.role === Stakeholders.URBAN_PLANNER && (
-                <Button className="w-full primary" onClick={() => { setIsOpen(true); clearForm() }}>
-                    Add new document
+                <Button className="w-full primary flex items-center" style={{ borderRadius: ' 0.3rem' }} onClick={() => { setIsOpen(true); clearForm() }}>
+                    <span className="flex items-center">
+                        <RiAddLine className="mr-2" /> Add new document
+                    </span>
                 </Button>
             )}
             <Dialog open={isOpen} onClose={(val) => setIsOpen(val)} static={true}>

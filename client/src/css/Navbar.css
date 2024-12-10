@@ -1,0 +1,42 @@
+.buttonStyle {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.buttonStyle a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.buttonStyle:hover {
+  background-color: #e0e0e0;
+  /* Change this to your desired hover color */
+}
+
+/* Dark theme styles */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #121212;
+    color: #E0E0E0;
+  }
+
+  .buttonStyle {
+    color: #E0E0E0;
+  }
+
+  .buttonStyle:hover {
+    background-color: white;
+    /* Change background color on hover */
+    color: black;
+    /* Change text color on hover */
+  }
+
+  .buttonStyle a {
+    color: inherit;
+  }
+}
